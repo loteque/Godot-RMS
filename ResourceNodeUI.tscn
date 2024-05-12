@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8bm7v0tnm55y"]
+
+[ext_resource type="Script" path="res://ResourceNodeUI.gd" id="1_pkw0t"]
+
+[node name="ResourceNode" type="HBoxContainer"]
+script = ExtResource("1_pkw0t")
+
+[node name="ResourceName" type="Label" parent="."]
+layout_mode = 2
+
+[node name="ResourceValue" type="Label" parent="."]
+layout_mode = 2
+
+[node name="CollectButton" type="Button" parent="."]
+layout_mode = 2
+text = "Collect"

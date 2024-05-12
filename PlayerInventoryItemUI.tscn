@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://cn0vcq3rq61v8"]
+
+[ext_resource type="Script" path="res://PlayerInvetoryItem.gd" id="1_ci1t3"]
+
+[node name="PlayerInvetoryItem" type="HBoxContainer"]
+script = ExtResource("1_ci1t3")
+
+[node name="ResourceName" type="Label" parent="."]
+layout_mode = 2
+
+[node name="ResourceValue" type="Label" parent="."]
+layout_mode = 2
