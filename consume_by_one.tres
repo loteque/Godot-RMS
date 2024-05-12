@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="consumer" load_steps=2 format=3 uid="uid://ev7l418mcg6c"]
+
+[ext_resource type="Script" path="res://consumer.gd" id="1_p4qoj"]
+
+[resource]
+script = ExtResource("1_p4qoj")
+name = "By One"
+is_auto = false
+rate = 1

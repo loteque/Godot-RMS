@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Consumable" load_steps=2 format=3 uid="uid://bhftasardy3c8"]
+
+[ext_resource type="Script" path="res://consumable.gd" id="1_reje0"]
+
+[resource]
+script = ExtResource("1_reje0")
+name = "Photons"
+amount = 1000
+regen = false
+min_amount = 0
+max_amount = 1000

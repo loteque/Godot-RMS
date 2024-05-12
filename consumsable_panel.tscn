@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://ljeatvnb7wjc"]
+
+[ext_resource type="Script" path="res://consumsable_panel.gd" id="1_egixm"]
+
+[node name="ConsumablePanel" type="PanelContainer" node_paths=PackedStringArray("name_label", "amount_label", "consume_button")]
+size_flags_vertical = 3
+script = ExtResource("1_egixm")
+name_label = NodePath("VBoxContainer/Label")
+amount_label = NodePath("VBoxContainer/Label2")
+consume_button = NodePath("VBoxContainer/HBoxContainer/Consume")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Name"
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Amt
+"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Consume" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Consume
+"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Consume" to="." method="_on_consume_pressed"]
