@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=3 uid="uid://bprw2xgtkx0vv"]
+
+[ext_resource type="Script" path="res://inventory_resources.gd" id="1_8pfim"]
+[ext_resource type="PackedScene" uid="uid://ljeatvnb7wjc" path="res://consumsable_panel.tscn" id="1_fank0"]
+[ext_resource type="Script" path="res://inventory_data.gd" id="1_ggygj"]
+[ext_resource type="Resource" uid="uid://dj33lq62p5jnc" path="res://player_inventory.tres" id="2_j618f"]
+[ext_resource type="PackedScene" uid="uid://bgv4vs8e4tu74" path="res://consumable_data.tscn" id="2_q6b2o"]
+[ext_resource type="Resource" uid="uid://bhftasardy3c8" path="res://photons.tres" id="3_rxcv6"]
+[ext_resource type="Resource" uid="uid://ev7l418mcg6c" path="res://consume_by_one.tres" id="4_d0o8y"]
+
+[node name="Demo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InventoryResources" type="VBoxContainer" parent="HBoxContainer" node_paths=PackedStringArray("inv_data")]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("1_8pfim")
+inv_panel = ExtResource("1_fank0")
+inv_data = NodePath("InventoryData")
+
+[node name="Label" type="Label" parent="HBoxContainer/InventoryResources"]
+layout_mode = 2
+text = "Inventory
+"
+horizontal_alignment = 1
+
+[node name="InventoryData" type="Node" parent="HBoxContainer/InventoryResources"]
+script = ExtResource("1_ggygj")
+inventory = ExtResource("2_j618f")
+
+[node name="WorldResources" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/WorldResources"]
+layout_mode = 2
+text = "World Resources
+"
+horizontal_alignment = 1
+
+[node name="ConsumablePanel" parent="HBoxContainer/WorldResources" node_paths=PackedStringArray("consumable_data") instance=ExtResource("1_fank0")]
+layout_mode = 2
+consumable_data = NodePath("ConsumableData")
+
+[node name="ConsumableData" parent="HBoxContainer/WorldResources/ConsumablePanel" instance=ExtResource("2_q6b2o")]
+consumable = ExtResource("3_rxcv6")
+consumer = ExtResource("4_d0o8y")
