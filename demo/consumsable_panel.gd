@@ -19,6 +19,3 @@ func _on_consume_pressed():
                 reciever
             )
         )
-    
-
-
