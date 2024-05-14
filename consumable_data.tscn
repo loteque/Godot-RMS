@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgv4vs8e4tu74"]
-
-[ext_resource type="Script" path="res://consumable_data.gd" id="1_25dje"]
-
-[node name="ConsumableData" type="Node"]
-script = ExtResource("1_25dje")
