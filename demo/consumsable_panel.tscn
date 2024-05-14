@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ljeatvnb7wjc"]
 
-[ext_resource type="Script" path="res://consumsable_panel.gd" id="1_egixm"]
+[ext_resource type="Script" path="res://demo/consumsable_panel.gd" id="1_egixm"]
 
 [node name="ConsumablePanel" type="PanelContainer" node_paths=PackedStringArray("name_label", "amount_label", "consume_button")]
 size_flags_vertical = 3

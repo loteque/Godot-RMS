@@ -4,12 +4,15 @@ class_name Consumer
 @export var name: String
 @export var is_auto: bool
 @export var rate: int
-@export var sink: Inventory
 
-signal consumed(consumable, amount)
+signal subtracted(consumable, amount)
+signal added(consumable, amount)
 
-func consume(consumable):
-    consumed.emit(rate)
-    sink.add_consumable(consumable, rate)
+func subtract(consumable):
+    subtracted.emit(rate)
     return consumable.amount - rate
+
+func add(consumable):
+    added.emit(rate)
+    return consumable.amount + rate
 
