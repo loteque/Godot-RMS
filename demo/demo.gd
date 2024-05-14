@@ -11,6 +11,9 @@ func _on_player_photons_updated(_name, amount):
     %PlayerConsumables/ConsumablePanel.amount_label.text = str(amount)
 
 func _ready():
+    # feels like way to much typing to add consumables.
+    # maybe predefined values from a json or tres could be used to initialize new consumables.
+    # We can dynamically generate these values at runtime so that is a plus
     player_consumable_1 = Consumable.new("player_photons")
     player_consumable_1.amount = 0
     player_consumable_1.min_amount = 0
