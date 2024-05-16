@@ -10,6 +10,7 @@ class_name ResourceContainer
 
 enum STATUS {
     available,
+    unavailable,
     full,
     empty
 }

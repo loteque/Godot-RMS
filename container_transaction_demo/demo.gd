@@ -1,6 +1,6 @@
 extends Control
 
-var container_panel: PackedScene = preload("res://demo/consumsable_panel.tscn")
+var container_panel: PackedScene = preload("res://container_transaction_demo/consumsable_panel.tscn")
 
 func _ready():
     
