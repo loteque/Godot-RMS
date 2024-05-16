@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3w7eldjfo1xc"]
+[gd_scene load_steps=2 format=3 uid="uid://c3w7eldjfo1xc"]
 
 [ext_resource type="Script" path="res://demo/demo.gd" id="1_3h6ee"]
-[ext_resource type="PackedScene" uid="uid://ljeatvnb7wjc" path="res://demo/consumsable_panel.tscn" id="1_fank0"]
 
 [node name="Demo" type="Control"]
 layout_mode = 3
@@ -30,9 +29,6 @@ layout_mode = 2
 text = "Player Consumables"
 horizontal_alignment = 1
 
-[node name="ConsumablePanel" parent="HBoxContainer/PlayerConsumables" instance=ExtResource("1_fank0")]
-layout_mode = 2
-
 [node name="WorldConsumables" type="VBoxContainer" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -42,6 +38,3 @@ size_flags_horizontal = 3
 layout_mode = 2
 text = "World Consumables"
 horizontal_alignment = 1
-
-[node name="ConsumablePanel" parent="HBoxContainer/WorldConsumables" instance=ExtResource("1_fank0")]
-layout_mode = 2
