@@ -19,11 +19,10 @@ var transaction: Transaction
 var full: bool = false
 var empty: bool = false
 var _updated_sig_str: String
-var _remainder: int
 
 func update_amount(new_amount: int):
     amount = new_amount
-    emit_signal(_updated_sig_str, id, amount, _remainder)
+    emit_signal(_updated_sig_str, id, amount)
     print("emitted container signal, new_amount: " + str(new_amount))
 
 func subtract(rate):
@@ -77,7 +76,6 @@ func _init(nam: String,
         _updated_sig_str, 
         [       
             {"name": "id", "type": TYPE_STRING},
-            {"name": "amount", "type": TYPE_INT}, 
-            {"name": "_remainder", "type": TYPE_INT}
+            {"name": "amount", "type": TYPE_INT}
         ]
     )
