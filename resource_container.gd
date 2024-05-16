@@ -8,10 +8,18 @@ class_name ResourceContainer
 @export var inventory_id: String
 @export var inventory_index: int
 
+enum STATUS {
+    available,
+    full,
+    empty
+}
+
+var status: STATUS = STATUS.available
 var transaction: Transaction
+var full: bool = false
+var empty: bool = false
 var _updated_sig_str: String
 var _remainder: int
-var _back_transaction: Transaction
 
 func update_amount(new_amount: int):
     amount = new_amount
@@ -19,32 +27,33 @@ func update_amount(new_amount: int):
     print("emitted container signal, new_amount: " + str(new_amount))
 
 func subtract(rate):
-    var new_amount = amount - rate
+    if status == STATUS.empty:
+        return
     
-    if new_amount < min_amount:
-        _remainder = min_amount - new_amount
-        new_amount = min_amount
+    var new_amount = amount - rate
+    if new_amount <= 0:
+        new_amount = 0
+        status = STATUS.empty
+    else:
+        status = STATUS.available
 
     update_amount(new_amount)
 
 func add(rate):
-    var new_amount = amount + rate
+    if status == STATUS.full:
+        return
 
-    if new_amount > max_amount:
-        _remainder = new_amount - max_amount
+    var new_amount = amount + rate
+    if new_amount >= max_amount:
         new_amount = max_amount
-        
-#back transaction not working        
-        _back_transaction = Transaction.new(
-            transaction.reciever, 
-            transaction.sender,
-            id + "_back_transaction",
-            false,
-            _remainder
-        )
-        _back_transaction.execute()
+        status = STATUS.full
+    else:
+        status = STATUS.available
 
     update_amount(new_amount)
+
+func get_status():
+    return status
 
 func get_signal_str():
     return _updated_sig_str

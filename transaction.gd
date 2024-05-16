@@ -10,8 +10,13 @@ class_name Transaction
 func execute():
     if sender == reciever:
         sender.subtract(rate)
+    elif reciever.status == reciever.STATUS.full:
+        return
+
+    if sender.status == sender.STATUS.empty:
+        return
     
-    elif sender != reciever:
+    if sender != reciever: 
         if sender:
             sender.subtract(rate)
     
