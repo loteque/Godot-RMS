@@ -7,22 +7,22 @@ extends PanelContainer
 var container: ResourceContainer
 
 func create_container(
-                    con_nam: String, 
-                    con_amt: int, 
-                    con_min_amt: int, 
-                    con_max_amt: int, 
-                    inv_id: String = "", 
-                    inv_idx: int = 0
-                    ):
+    con_nam: String, 
+    con_amt: int, 
+    con_min_amt: int, 
+    con_max_amt: int, 
+    inv_id: String = "", 
+    inv_idx: int = 0
+    ):
 
     container = ResourceContainer.new(
-                            con_nam, 
-                            con_amt, 
-                            con_min_amt, 
-                            con_max_amt, 
-                            inv_id, 
-                            inv_idx
-                            )
+        con_nam, 
+        con_amt, 
+        con_min_amt, 
+        con_max_amt, 
+        inv_id, 
+        inv_idx
+        )
 
     name_label.text = con_nam
     amount_label.text = str(con_amt)
