@@ -33,14 +33,13 @@ func create_container(
 
     return self
 
-func _on_updated(transaction_name, amount, remainder):
+func _on_updated(transaction_name, amount):
     amount_label.text = str(amount)
     print("caught container signal from: " 
     + transaction_name + 
     ", amount: " 
     + str(amount) + 
-    ", with remainder: " 
-    + str(remainder))
+    ", with remainder: ")
 
 func _on_consume_pressed():
     container.transaction.execute()
