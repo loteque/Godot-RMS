@@ -15,6 +15,7 @@ func get_container_by_name(container_id) -> ResourceContainer:
             print("inventory is empty")
             return selected
 
+        #this match is case dependent
         if container.id == container_id:
             selected = container
 

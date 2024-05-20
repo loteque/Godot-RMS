@@ -1,5 +1,9 @@
 extends Node
 
+# this could be the product that the
+# user interfaces with. It could be a
+# custom node.
+
 @onready var resource_container: ResourceContainer
 
 @export var id: String
@@ -29,7 +33,6 @@ func collect(collector):
             resource_container, 
             collector_container, 
             "add" + resource_container.id,
-            false,
             resource_container.amount
         )
 
@@ -54,7 +57,6 @@ func collect(collector):
             resource_container, 
             new_container, 
             "add" + resource_container.id,
-            false,
             resource_container.amount
         )
 
