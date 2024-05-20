@@ -2,14 +2,17 @@ extends Resource
 class_name Transaction
 
 @export var name: String
-@export var is_auto: bool
 @export var rate: int
 @export var sender: ResourceContainer
 @export var reciever: ResourceContainer
 
 func execute():
     if !reciever:
-        print("transaction " + name + " has no reciever")
+        # we should return an error
+        print("transaction " 
+            + name + 
+            " has no reciever"
+            )
         return
 
     if sender == reciever:
@@ -27,9 +30,13 @@ func execute():
         if reciever:
             reciever.add(rate)
 
-func _init(send: ResourceContainer, recieve: ResourceContainer, nam: String = "", auto: bool = false, r: int = 0):
+func _init(send: ResourceContainer, 
+            recieve: ResourceContainer, 
+            nam: String = "", 
+            r: int = 0
+            ):
+
     reciever = recieve
     sender = send
     name = nam
-    is_auto = auto
     rate = r

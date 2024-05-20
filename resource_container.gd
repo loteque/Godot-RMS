@@ -24,7 +24,9 @@ var _updated_sig_str: String
 func update_amount(new_amount: int):
     amount = new_amount
     emit_signal(_updated_sig_str, id, amount)
-    print("emitted container signal, new_amount: " + str(new_amount))
+    print("emitted container signal, new_amount: " 
+        + str(new_amount)
+        )
 
 func subtract(rate):
     if status == STATUS.empty:
@@ -63,7 +65,8 @@ func _init(nam: String,
             min_amt: int, 
             max_amt: int, 
             inv_id: String = "", 
-            inv_idx: int = 0):
+            inv_idx: int = 0
+            ):
     
     id = nam
     amount = amt
@@ -76,7 +79,13 @@ func _init(nam: String,
     add_user_signal(
         _updated_sig_str, 
         [       
-            {"name": "id", "type": TYPE_STRING},
-            {"name": "amount", "type": TYPE_INT}
+            {
+                "name": "id", 
+                "type": TYPE_STRING
+                },
+            {
+                "name": "amount", 
+                "type": TYPE_INT
+                }
         ]
     )
