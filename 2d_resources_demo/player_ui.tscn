@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://20yajpl4yj87"]
+
+[ext_resource type="PackedScene" uid="uid://doxc2a86fb2l8" path="res://2d_resources_demo/container_panel.tscn" id="1_cgq8q"]
+[ext_resource type="Script" path="res://2d_resources_demo/player_ui.gd" id="1_f1f6r"]
+
+[node name="player_ui" type="CanvasLayer" node_paths=PackedStringArray("resource_list")]
+script = ExtResource("1_f1f6r")
+resource_list = NodePath("ResourceList")
+
+[node name="ResourceList" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ResourcesCollected" type="Label" parent="ResourceList"]
+layout_mode = 2
+text = "Resources Collected"
+
+[node name="ContainerPanel" parent="ResourceList" instance=ExtResource("1_cgq8q")]
+visible = false
+layout_mode = 2
