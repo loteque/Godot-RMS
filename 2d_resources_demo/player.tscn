@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3 uid="uid://tfptfs83vcex"]
+
+[ext_resource type="Script" path="res://2d_resources_demo/player.gd" id="1_vc03j"]
+[ext_resource type="PackedScene" uid="uid://20yajpl4yj87" path="res://2d_resources_demo/player_ui.tscn" id="2_i37n7"]
+[ext_resource type="Texture2D" uid="uid://b8qnoghd7pwth" path="res://proto_kenney_assets/kenney_simple-space/PNG/Default/ship_A.png" id="2_nn7te"]
+[ext_resource type="Script" path="res://2d_resources_demo/controlls.gd" id="3_hgosm"]
+[ext_resource type="Script" path="res://2d_resources_demo/HasInventory.gd" id="4_rqlwq"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_t3hom"]
+radius = 5.0
+height = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fuy3r"]
+radius = 39.8121
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("controlls", "inventory_config") groups=["Collectors"]]
+script = ExtResource("1_vc03j")
+controlls = NodePath("Controlls")
+inventory_config = NodePath("HasInventory")
+
+[node name="player_ui" parent="." instance=ExtResource("2_i37n7")]
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_nn7te")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
+shape = SubResource("CapsuleShape2D_t3hom")
+
+[node name="Controlls" type="Node" parent="."]
+script = ExtResource("3_hgosm")
+
+[node name="HasInventory" type="Node" parent="." node_paths=PackedStringArray("player_ui")]
+script = ExtResource("4_rqlwq")
+player_ui = NodePath("../player_ui")
+
+[node name="PlayerCollector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCollector"]
+shape = SubResource("CircleShape2D_fuy3r")
+
+[connection signal="inventory_created" from="HasInventory" to="." method="_on_has_inventory_inventory_created"]

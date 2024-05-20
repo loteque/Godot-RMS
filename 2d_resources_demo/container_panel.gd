@@ -33,19 +33,8 @@ func create_container(
 
     return self
 
-func add_container(container_):
-    container = container_
-    name_label.text = container.id
-    amount_label.text = str(container.amount)
-    name = container.id
-
-    var sig_str = container.get_signal_str()
-    container.connect(sig_str, _on_updated)
-
 func _on_updated(transaction_name, amount):
     amount_label.text = str(amount)
-    
-    # debug
     print("caught container signal from: " 
     + transaction_name + 
     ", amount: " 

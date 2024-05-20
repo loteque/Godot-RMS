@@ -8,6 +8,10 @@ class_name Transaction
 @export var reciever: ResourceContainer
 
 func execute():
+    if !reciever:
+        print("transaction " + name + " has no reciever")
+        return
+
     if sender == reciever:
         sender.subtract(rate)
     elif reciever.status == reciever.STATUS.full:
