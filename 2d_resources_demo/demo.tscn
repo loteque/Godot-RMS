@@ -1,15 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://du0fym7a6rj2n"]
+[gd_scene load_steps=2 format=3 uid="uid://du0fym7a6rj2n"]
 
 [ext_resource type="PackedScene" uid="uid://tfptfs83vcex" path="res://2d_resources_demo/player.tscn" id="2_o0dv8"]
-[ext_resource type="PackedScene" uid="uid://bkoo88m2j4jej" path="res://2d_resources_demo/resource_node.tscn" id="3_03ud7"]
 
 [node name="Demo" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("2_o0dv8")]
 position = Vector2(120, 60)
-
-[node name="ResourceNode" parent="." instance=ExtResource("3_03ud7")]
-position = Vector2(113, 129)
-
-[node name="ResourceNode2" parent="." instance=ExtResource("3_03ud7")]
-position = Vector2(194, 64)

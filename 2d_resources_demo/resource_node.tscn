@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://2d_resources_demo/resource_node.gd" id="1_20eiq"]
 [ext_resource type="Texture2D" uid="uid://b10ytvflwvgyo" path="res://proto_kenney_assets/kenney_simple-space/PNG/Default/meteor_small.png" id="1_81eju"]
-[ext_resource type="Script" path="res://2d_resources_demo/HasResource.gd" id="2_wl5xi"]
+[ext_resource type="Script" path="res://Resource.gd" id="3_ixwht"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r8mpn"]
 radius = 16.0312
@@ -10,10 +10,9 @@ radius = 16.0312
 [sub_resource type="CircleShape2D" id="CircleShape2D_f4r32"]
 radius = 15.0333
 
-[node name="ResourceNode" type="RigidBody2D" node_paths=PackedStringArray("resource")]
+[node name="ResourceNode" type="RigidBody2D"]
 gravity_scale = 0.0
 script = ExtResource("1_20eiq")
-resource = NodePath("HasResource")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.192157, 0.423529, 1, 1)
@@ -23,7 +22,7 @@ texture = ExtResource("1_81eju")
 shape = SubResource("CircleShape2D_r8mpn")
 
 [node name="HasResource" type="Node" parent="."]
-script = ExtResource("2_wl5xi")
+script = ExtResource("3_ixwht")
 id = "oxygen"
 amount = 10
 max_amount = 10
