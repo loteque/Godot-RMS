@@ -1,6 +1,6 @@
 extends Node
 
-var player
+@export var player: Node
 
 var speed = 400
 

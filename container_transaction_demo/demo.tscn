@@ -1,40 +1,42 @@
-[gd_scene load_steps=2 format=3 uid="uid://c3w7eldjfo1xc"]
+[gd_scene load_steps=4 format=3 uid="uid://c3w7eldjfo1xc"]
 
 [ext_resource type="Script" path="res://container_transaction_demo/demo.gd" id="1_3h6ee"]
+[ext_resource type="Script" path="res://Inventory.gd" id="2_spxh6"]
+[ext_resource type="Script" path="res://Resource.gd" id="3_a6oby"]
 
-[node name="Demo" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Demo" type="Node"]
 script = ExtResource("1_3h6ee")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 1
+[node name="Player" type="Node" parent="."]
+
+[node name="Inventory" type="Node" parent="Player" node_paths=PackedStringArray("player")]
+script = ExtResource("2_spxh6")
+player = NodePath("..")
+container_size_limit = 100
+max_containers = 2
+
+[node name="Gold" type="Node" parent="."]
+
+[node name="ResourceContainer" type="Node" parent="Gold" node_paths=PackedStringArray("parent")]
+script = ExtResource("3_a6oby")
+parent = NodePath("..")
+id = "gold"
+amount = 10
+max_amount = 10
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Output" type="TextEdit" parent="UI"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+editable = false
 
-[node name="PlayerConsumables" type="VBoxContainer" parent="HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="HBoxContainer/PlayerConsumables"]
-layout_mode = 2
-text = "Player Consumables"
-horizontal_alignment = 1
-
-[node name="WorldConsumables" type="VBoxContainer" parent="HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="HBoxContainer/WorldConsumables"]
-layout_mode = 2
-text = "World Consumables"
-horizontal_alignment = 1
+[connection signal="added_container" from="Player/Inventory" to="." method="_on_inventory_added_container"]
+[connection signal="inventory_created" from="Player/Inventory" to="." method="_on_inventory_inventory_created"]
+[connection signal="attached_container" from="Gold/ResourceContainer" to="." method="_on_resource_container_attached_container"]
+[connection signal="created_container" from="Gold/ResourceContainer" to="." method="_on_resource_container_created_container"]
+[connection signal="transaction_executed" from="Gold/ResourceContainer" to="." method="_on_resource_container_transaction_executed"]
+[connection signal="updated_container" from="Gold/ResourceContainer" to="." method="_on_resource_container_updated_container"]
