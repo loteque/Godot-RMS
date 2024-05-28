@@ -41,7 +41,9 @@ func get_container_by_name(container_id) -> ContainerResource:
         #this match is case dependent
         if container._id == container_id:
             selected = container
-
+        else:
+            print("no match in inventory_container")
+            
     print("looked up: " + container_id)
     print("found: " + str(selected))
     return selected

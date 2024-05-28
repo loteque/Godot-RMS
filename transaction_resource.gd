@@ -8,6 +8,7 @@ var _reciever: ContainerResource
 
 enum ERROR{
     success,
+    unknown,
     no_reciever,
     reciver_unavailable,
     no_sender,
@@ -27,21 +28,16 @@ func get_reciever():
     return _reciever
 
 func execute():
-    
-    if !_reciever:
-        # we should return an error
-        print("transaction " 
-            + _id + 
-            " has no _reciever"
-            )
+    #push_error("there was an execution error in transaction.execute()")
+    if _reciever == null:
 
         return ERROR.no_reciever
 
-    if _reciever.state == _reciever.STATUS.unavailable:
+    if _reciever.status == _reciever.STATUS.unavailable:
 
         return ERROR.reciver_unavailable
 
-    if _sender.state == _sender.STATUS.unavailable:
+    if _sender.status == _sender.STATUS.unavailable:
         
         return ERROR.sender_unavailabe
     
@@ -56,6 +52,8 @@ func execute():
             _reciever.mode = _reciever.MODE.reciever
             _reciever.add(_rate)
             return ERROR.success
+
+    return ERROR.unknown
 
 func _init(sender: ContainerResource, 
             reciever: ContainerResource, 
