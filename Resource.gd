@@ -26,7 +26,8 @@ func create_container():
         id, 
         amount, 
         min_amount, 
-        max_amount, 
+        max_amount,
+        depletable, 
         "", 
         0
         )
@@ -82,8 +83,9 @@ func send_update_to_inventory(reciever_inventory: Inventory):
             0,
             0,
             reciever_inventory.get_inventory().get_container_max_size(),
+            true,
             reciever_inventory.get_inventory().get_id(),
-            0
+            0,
         )
         
         #debug
@@ -108,8 +110,8 @@ func send_update_to_inventory(reciever_inventory: Inventory):
         var err = _execute_transaction(transaction)
         print("transaction error code: " + str(err))
 
-    if depletable and container.get_amount() == 0:
-        removed_container.emit()
+    if container.is_depleted():
+        removed_container.emit(self)
         queue_free()
 
 
