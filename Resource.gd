@@ -20,22 +20,15 @@ signal transaction_executed(transaction: TransactionResource, exit_status)
 func get_container():
     return container
 
-func create_container(
-    con_nam: String, 
-    con_amt: int, 
-    con_min_amt: int, 
-    con_max_amt: int, 
-    inv_id: String = "", 
-    inv_idx: int = 0
-    ):
+func create_container():
 
     container = ContainerResource.new(
-        con_nam, 
-        con_amt, 
-        con_min_amt, 
-        con_max_amt, 
-        inv_id, 
-        inv_idx
+        id, 
+        amount, 
+        min_amount, 
+        max_amount, 
+        "", 
+        0
         )
 
     created_container.emit(container)
@@ -45,7 +38,7 @@ func attach_container(container_):
     container = container_
     attached_container.emit()
 
-func _execute_transaction(transaction):
+func _execute_transaction(transaction: TransactionResource) -> int:
     var err = transaction.execute()
     transaction_executed.emit(transaction, err)
     if err == transaction.ERROR.success:
@@ -55,12 +48,20 @@ func _execute_transaction(transaction):
             transaction.get_reciever().get_inventory_id()
         )
 
-func send_update_to_inventory(reciever: Inventory):
-    var reciever_container = reciever.get_inventory().get_container_by_name(
+    return err
+
+func send_update_to_inventory(reciever_inventory: Inventory):
+    var reciever_container = reciever_inventory.get_inventory().get_container_by_name(
         container.get_id()
     )
 
     if reciever_container:
+
+        #debug
+        print("reciever_container: " + str(reciever_container))
+        print("reciever_inventory container id: " + str(reciever_container.get_id()))
+        print("reciever_inventory container max: " + str(reciever_container.get_max_amount()))
+        print("inventory container max: " + str(reciever_inventory.get_inventory().get_container_max_size()))
         
         var transaction = TransactionResource.new(
             container, 
@@ -68,23 +69,29 @@ func send_update_to_inventory(reciever: Inventory):
             "add" + container.get_id(),
             container.get_amount()
         )
+        
+        #await get_tree().create_timer(1).timeout
 
-        _execute_transaction(transaction)
+
+        var err = _execute_transaction(transaction)
+        print("transaction error code: " + str(err))
     
     else:
         var new_container = ContainerResource.new(
             container.get_id(),
             0,
             0,
-            reciever.get_inventory().get_container_max_size(),
-            reciever.get_inventory().get_id(),
+            reciever_inventory.get_inventory().get_container_max_size(),
+            reciever_inventory.get_inventory().get_id(),
             0
         )
+        
+        #debug
         print("container id: " + str(new_container.get_id()))
         print("container max: " + str(new_container.get_max_amount()))
-        print("inventory container max: " + str(reciever.get_inventory().get_container_max_size()))
+        print("inventory container max: " + str(reciever_inventory.get_inventory().get_container_max_size()))
 
-        reciever.add_container(
+        reciever_inventory.add_container(
             new_container,
             0
         )
@@ -95,18 +102,16 @@ func send_update_to_inventory(reciever: Inventory):
             "add" + str(container.get_amount()) + container.get_id(),
             container.get_amount()
         )
+        
         print(str(transaction.get_sender(), transaction.get_reciever(), transaction.get_rate()))
-        _execute_transaction(transaction)
+        
+        var err = _execute_transaction(transaction)
+        print("transaction error code: " + str(err))
 
     if depletable and container.get_amount() == 0:
         removed_container.emit()
-        parent.queue_free()
+        queue_free()
 
 
 func _ready():
-    create_container(
-        id, 
-        amount, 
-        min_amount, 
-        max_amount
-    )
+    create_container()
