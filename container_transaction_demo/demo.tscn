@@ -4,8 +4,9 @@
 [ext_resource type="Script" path="res://Inventory.gd" id="2_spxh6"]
 [ext_resource type="Script" path="res://Resource.gd" id="3_a6oby"]
 
-[node name="Demo" type="Node"]
+[node name="Demo" type="Node" node_paths=PackedStringArray("gold")]
 script = ExtResource("1_3h6ee")
+gold = NodePath("Gold/ResourceContainer")
 
 [node name="Player" type="Node" parent="."]
 
