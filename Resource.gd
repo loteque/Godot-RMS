@@ -14,8 +14,15 @@ var transaction_exit_status: int
 signal created_container(container: ContainerResource)
 signal attached_container(attached_to: ResourceContainer)
 signal removed_container(removed_from: ResourceContainer)
-signal updated_container(id: String, amount: int, inventory_name: String)
-signal transaction_executed(transaction: TransactionResource, exit_status)
+signal updated_container(
+    id: String, 
+    amount: int, 
+    inventory_name: String, 
+)
+signal transaction_executed(
+    transaction: TransactionResource, 
+    exit_status: TransactionResource.ExitStatus
+)
 
 func get_container():
     return container
@@ -39,19 +46,26 @@ func attach_container(container_):
     container = container_
     attached_container.emit()
 
-func _execute_transaction(transaction: TransactionResource) -> int:
-    var err = transaction.execute()
-    transaction_executed.emit(transaction, err)
-    if err == transaction.ERROR.success:
+func _execute_transaction(transaction: TransactionResource) -> TransactionResource.ExitStatus:
+    var exit_status = transaction.execute()
+    transaction_executed.emit(transaction, exit_status)
+    if exit_status.get_error() == transaction.ERROR.success:
         updated_container.emit(
             transaction.get_reciever().get_id(), 
             transaction.get_reciever().get_amount(),
             transaction.get_reciever().get_inventory_id()
         )
+        updated_container.emit(
+            transaction.get_sender().get_id(),
+            transaction.get_sender().get_amount(),
+            transaction.get_sender().get_inventory_id()
+        )
 
-    return err
+    return exit_status
 
 func send_update_to_inventory(reciever_inventory: Inventory):
+    
+    var exit_status: TransactionResource.ExitStatus
     var reciever_container = reciever_inventory.get_inventory().get_container_by_name(
         container.get_id()
     )
@@ -71,11 +85,8 @@ func send_update_to_inventory(reciever_inventory: Inventory):
             container.get_amount()
         )
         
-        #await get_tree().create_timer(1).timeout
-
-
-        var err = _execute_transaction(transaction)
-        print("transaction error code: " + str(err))
+        exit_status = _execute_transaction(transaction)
+        print("transaction error code: " + str(exit_status))
     
     else:
         var new_container = ContainerResource.new(
@@ -107,8 +118,9 @@ func send_update_to_inventory(reciever_inventory: Inventory):
         
         print(str(transaction.get_sender(), transaction.get_reciever(), transaction.get_rate()))
         
-        var err = _execute_transaction(transaction)
-        print("transaction error code: " + str(err))
+        exit_status = _execute_transaction(transaction)
+        print("transaction error code: " + str(exit_status.get_error()))
+        print("transaction overflow: " + str(exit_status.get_overflow()))
 
     if container.is_depleted():
         removed_container.emit(self)
