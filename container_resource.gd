@@ -7,6 +7,7 @@ class_name ContainerResource
 @export var _max_amount: int
 @export var _inventory_id: String
 @export var _inventory_index: int
+@export var _is_depletable: bool = true
 
 enum STATUS {
     available,
@@ -60,6 +61,13 @@ func get_mode():
 func update_amount(new_amount: int):
     _amount = new_amount
 
+func is_depleted():
+    if _is_depletable and state == STATE.empty:
+        return true
+    else:
+        return false
+
+
 func subtract(rate):
     if state == STATE.empty:
         status = STATUS.unavailable
@@ -101,6 +109,7 @@ func _init(name: String,
             amount: int, 
             min_amount: int, 
             max_amount: int, 
+            is_depletable,
             inventory_id: String = "", 
             inventory_index: int = 0
             ):
@@ -109,6 +118,7 @@ func _init(name: String,
     _amount = amount
     _min_amount = min_amount
     _max_amount = max_amount
+    _is_depletable = is_depletable
     _inventory_id = inventory_id
     _inventory_index = inventory_index
 
