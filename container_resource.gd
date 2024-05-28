@@ -58,6 +58,17 @@ func get_state():
 func get_mode():
     return mode
 
+#overflow should be 0 when new amount <= max amount
+#should be positive integer when > max amount
+func claculate_overflow(rate: int) -> int:
+    var new_amount = _amount + rate
+    var overflow: int = 0
+    
+    if new_amount > _max_amount:
+        overflow = new_amount - _max_amount
+
+    return overflow
+
 func update_amount(new_amount: int):
     _amount = new_amount
 
@@ -95,13 +106,12 @@ func add(rate):
         new_amount = _max_amount
         state = STATE.full
         status = STATUS.unavailable
-        print(str(_max_amount))
+
     else:
         state = STATE.partial
         status = STATUS.available
 
     update_amount(new_amount)
-    print(str(new_amount))
 
 
 
