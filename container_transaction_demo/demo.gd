@@ -25,7 +25,6 @@ func _ready():
     new_gold.send_update_to_inventory(player_inventory)
 
     gold = ResourceContainer.new()
-    #TODO: #4 Should ID actually be "resource_type" or "type"?
     gold.id = "gold"
     gold.min_amount = 0
     gold.max_amount = 10
@@ -47,9 +46,20 @@ func _ready():
     gold_110.connect("transaction_executed", _on_resource_container_transaction_executed)
     gold_110.connect("updated_container", _on_resource_container_updated_container)
     gold_110.connect("removed_container", _on_resource_container_removed_container)   
-    #TODO: #5 ecxess gold should remain in its original container
     gold_110.send_update_to_inventory(player_inventory)
     
+    gold = ResourceContainer.new()
+    gold.id = "gold"
+    gold.max_amount = 110
+    gold.amount = 110
+    add_child(gold)
+    gold.connect("created_container", _on_resource_container_created_container)
+    gold.connect("attached_container", _on_resource_container_attached_container)
+    gold.connect("transaction_executed", _on_resource_container_transaction_executed)
+    gold.connect("updated_container", _on_resource_container_updated_container)
+    gold.connect("removed_container", _on_resource_container_removed_container)   
+    gold.send_update_to_inventory(player_inventory)
+
 func _on_resource_container_created_container(container):
     result = result + "resource container created: " + str(container.get_id()) + "\n"
     result = result + "container max: " + str(container.get_max_amount()) + "\n"
@@ -70,10 +80,12 @@ func _on_resource_container_transaction_executed(transaction, exit_status):
     result = result + "transaction id: " + str(transaction.get_id()) + "\n"
     result = result + "transaction amount: " + str(transaction.get_rate()) + "\n"
     
-    if exit_status == 0:
+    if exit_status.get_error() == transaction.ERROR.success:
         result = result + "transaction success\n"
+        result = result + "transaction overflow: " + str(exit_status.get_overflow()) + "\n"
+        transaction.get_sender().add(exit_status.get_overflow())
     else:
-        result = result + "transaction failed with error code: " + str(exit_status) + "\n"
+        result = result + "transaction failed with error code: " + str(exit_status.get_error()) + "\n"
 
 func _on_resource_container_updated_container(id:String, amount:int, inventory_id):
     result = result + "container updated: " + str(inventory_id) + " has " + str(amount) + " " + str(id) + "\n"
