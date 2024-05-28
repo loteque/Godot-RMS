@@ -10,7 +10,6 @@ func _ready():
     output = get_node("UI/Output")
 
     gold.send_update_to_inventory(player_inventory)
-    gold.queue_free()
 
     var new_gold = ResourceContainer.new()
     new_gold.id = "gold"
@@ -21,13 +20,9 @@ func _ready():
     new_gold.connect("attached_container", _on_resource_container_attached_container)
     new_gold.connect("transaction_executed", _on_resource_container_transaction_executed)
     new_gold.connect("updated_container", _on_resource_container_updated_container)
-
+    new_gold.connect("removed_container", _on_resource_container_removed_container)
     add_child(new_gold)
     new_gold.send_update_to_inventory(player_inventory)
-    
-    #TODO: #3 have resource queue_free itself
-    new_gold.queue_free()
-
 
     gold = ResourceContainer.new()
     #TODO: #4 Should ID actually be "resource_type" or "type"?
@@ -39,9 +34,9 @@ func _ready():
     gold.connect("attached_container", _on_resource_container_attached_container)
     gold.connect("transaction_executed", _on_resource_container_transaction_executed)
     gold.connect("updated_container", _on_resource_container_updated_container)
+    gold.connect("removed_container", _on_resource_container_removed_container)
     add_child(gold)
     gold.send_update_to_inventory(player_inventory)
-    gold.queue_free()
 
     var gold_110 = gold.duplicate()
     gold_110.max_amount = 110
@@ -51,7 +46,7 @@ func _ready():
     gold_110.connect("attached_container", _on_resource_container_attached_container)
     gold_110.connect("transaction_executed", _on_resource_container_transaction_executed)
     gold_110.connect("updated_container", _on_resource_container_updated_container)
-    
+    gold_110.connect("removed_container", _on_resource_container_removed_container)   
     #TODO: #5 ecxess gold should remain in its original container
     gold_110.send_update_to_inventory(player_inventory)
     
@@ -84,4 +79,6 @@ func _on_resource_container_updated_container(id:String, amount:int, inventory_i
     result = result + "container updated: " + str(inventory_id) + " has " + str(amount) + " " + str(id) + "\n"
     output.text = result
 
-
+func _on_resource_container_removed_container(removed_from:ResourceContainer):
+    result = result + "removed container from " + str(removed_from) + "\n"
+    
