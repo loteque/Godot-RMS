@@ -1,6 +1,6 @@
 extends Node
 
-var gold: ResourceContainer
+@export var gold: ResourceContainer
 var player_inventory: Inventory
 
 var output: TextEdit
@@ -9,30 +9,28 @@ var result: String = ""
 func _ready():
     output = get_node("UI/Output")
 
-    #send gold to the players inventory
     gold.send_update_to_inventory(player_inventory)
     gold.queue_free()
 
-    #create a new gold with a value less than the players inventory space and add it to the scene
     var new_gold = ResourceContainer.new()
     new_gold.id = "gold"
     new_gold.min_amount = 0
     new_gold.max_amount = 10
     new_gold.amount = 10
-    #connect signals
     new_gold.connect("created_container", _on_resource_container_created_container)
     new_gold.connect("attached_container", _on_resource_container_attached_container)
     new_gold.connect("transaction_executed", _on_resource_container_transaction_executed)
     new_gold.connect("updated_container", _on_resource_container_updated_container)
-    # add the new gold node to the scene tree
+
     add_child(new_gold)
-    
-    #send new gold to the players inventory
     new_gold.send_update_to_inventory(player_inventory)
+    
+    #TODO: #3 have resource queue_free itself
     new_gold.queue_free()
 
 
     gold = ResourceContainer.new()
+    #TODO: #4 Should ID actually be "resource_type" or "type"?
     gold.id = "gold"
     gold.min_amount = 0
     gold.max_amount = 10
@@ -45,7 +43,6 @@ func _ready():
     gold.send_update_to_inventory(player_inventory)
     gold.queue_free()
 
-    #create a new gold with a value greater than the players inventory space and add it to the scene
     var gold_110 = gold.duplicate()
     gold_110.max_amount = 110
     gold_110.amount = 110
@@ -54,10 +51,10 @@ func _ready():
     gold_110.connect("attached_container", _on_resource_container_attached_container)
     gold_110.connect("transaction_executed", _on_resource_container_transaction_executed)
     gold_110.connect("updated_container", _on_resource_container_updated_container)
-    #send new gold to the players inventory
+    
+    #TODO: #5 ecxess gold should remain in its original container
     gold_110.send_update_to_inventory(player_inventory)
     
-
 func _on_resource_container_created_container(container):
     result = result + "resource container created: " + str(container.get_id()) + "\n"
     result = result + "container max: " + str(container.get_max_amount()) + "\n"
@@ -65,8 +62,6 @@ func _on_resource_container_created_container(container):
 
 
 func _on_resource_container_attached_container(attached_to):
-    #this hack is messing stuff up
-    gold = attached_to
     result = result + "container attached to: " + str(attached_to.id) + "\n"
 
 func _on_inventory_inventory_created(inventory):
