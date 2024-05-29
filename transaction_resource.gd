@@ -39,7 +39,7 @@ func get_reciever():
     return _reciever
 
 func execute() -> ExitStatus:
-    #push_error("there was an execution error in transaction.execute()")
+    
     var exit_status = ExitStatus.new()
     
     if _reciever == null:
@@ -68,8 +68,11 @@ func execute() -> ExitStatus:
             var overflow = _reciever.claculate_overflow(_rate)
             _reciever.add(_rate)
             exit_status.set_status(ERROR.success, overflow)
-
-
+    
+    #debug
+    if exit_status.get_error() != ERROR.success:
+        push_warning("transaction.execute(), error code: " + str(exit_status.get_error()))
+    
     return exit_status
 
 func _init(sender: ContainerResource, 

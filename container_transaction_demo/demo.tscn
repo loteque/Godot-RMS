@@ -16,9 +16,8 @@ player = NodePath("..")
 container_size_limit = 100
 max_containers = 2
 
-[node name="Gold" type="Node" parent="." node_paths=PackedStringArray("parent")]
+[node name="Gold" type="Node" parent="."]
 script = ExtResource("3_a6oby")
-parent = NodePath("")
 id = "gold"
 amount = 10
 max_amount = 10
