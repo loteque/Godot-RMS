@@ -31,7 +31,7 @@ func add_container(container, idx):
     if _inventory.get_stores().size() >= max_containers:
         return
     
-    _inventory.add_container(container, idx)
+    _inventory.add_store(container, idx)
     added_container.emit(container)
 
 func _ready():

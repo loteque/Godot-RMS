@@ -48,7 +48,7 @@ func get_store_by_name(store_id) -> Store:
     print("found: " + str(selected))
     return selected
 
-func add_container(store: Store, metastore_index: int):
+func add_store(store: Store, metastore_index: int):
         if _stores.size() >= _max_amount:
             state = STATE.full
             return status
@@ -59,7 +59,7 @@ func add_container(store: Store, metastore_index: int):
         _stores.insert(metastore_index, store)
 
 # c_id is container_id?
-func remove_container(store_id: String):
+func remove_store(store_id: String):
     var selected = get_store_by_name(store_id)
 
     if !selected:
