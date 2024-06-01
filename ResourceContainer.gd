@@ -8,6 +8,7 @@ class_name ResourceContainer
 @export var min_amount: int
 @export var max_amount: int
 @export var depletable: bool = true
+@export var resource: Resource
 
 var container: Store
 var transaction_exit_status: int
@@ -43,8 +44,8 @@ func create_container():
     created_container.emit(container)
     attached_container.emit(self)
 
-func attach_container(new_container):
-    container = new_container
+func attach_store(store):
+    container = store
     attached_container.emit()
 
 func _execute_transaction(transaction: Transaction) -> Transaction.ExitStatus:

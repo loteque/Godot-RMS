@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://2d_resources_demo/resource_node.gd" id="1_20eiq"]
 [ext_resource type="Texture2D" uid="uid://b10ytvflwvgyo" path="res://proto_kenney_assets/kenney_simple-space/PNG/Default/meteor_small.png" id="1_81eju"]
-[ext_resource type="Script" path="res://Resource.gd" id="3_ixwht"]
+[ext_resource type="Script" path="res://ResourceContainer.gd" id="3_ixwht"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r8mpn"]
 radius = 16.0312
