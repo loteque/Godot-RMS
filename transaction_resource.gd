@@ -1,10 +1,10 @@
 extends Resource
-class_name TransactionResource
+class_name Transaction
 
 var _id: String
 var _rate: int
-var _sender: ContainerResource
-var _reciever: ContainerResource
+var _sender: Store
+var _reciever: Store
 
 enum ERROR{
     success,
@@ -75,8 +75,8 @@ func execute() -> ExitStatus:
     
     return exit_status
 
-func _init(sender: ContainerResource, 
-            reciever: ContainerResource, 
+func _init(sender: Store, 
+            reciever: Store, 
             id: String = "",
             rate: int = 0
             ):

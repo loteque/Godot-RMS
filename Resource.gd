@@ -1,3 +1,4 @@
+#We need to rename a lot of things in this file
 extends Node
 class_name ResourceContainer
 
@@ -8,10 +9,10 @@ class_name ResourceContainer
 @export var max_amount: int
 @export var depletable: bool = true
 
-var container: ContainerResource
+var container: Store
 var transaction_exit_status: int
 
-signal created_container(container: ContainerResource)
+signal created_container(container: Store)
 signal attached_container(attached_to: ResourceContainer)
 signal removed_container(removed_from: ResourceContainer)
 signal updated_container(
@@ -20,8 +21,8 @@ signal updated_container(
     inventory_name: String, 
 )
 signal transaction_executed(
-    transaction: TransactionResource, 
-    exit_status: TransactionResource.ExitStatus
+    transaction: Transaction, 
+    exit_status: Transaction.ExitStatus
 )
 
 func get_container():
@@ -29,7 +30,7 @@ func get_container():
 
 func create_container():
 
-    container = ContainerResource.new(
+    container = Store.new(
         id, 
         amount, 
         min_amount, 
@@ -42,11 +43,11 @@ func create_container():
     created_container.emit(container)
     attached_container.emit(self)
 
-func attach_container(container_):
-    container = container_
+func attach_container(new_container):
+    container = new_container
     attached_container.emit()
 
-func _execute_transaction(transaction: TransactionResource) -> TransactionResource.ExitStatus:
+func _execute_transaction(transaction: Transaction) -> Transaction.ExitStatus:
     var exit_status = transaction.execute()
     transaction_executed.emit(transaction, exit_status)
     if exit_status.get_error() == transaction.ERROR.success:
@@ -65,8 +66,8 @@ func _execute_transaction(transaction: TransactionResource) -> TransactionResour
 
 func send_update_to_inventory(reciever_inventory: Inventory):
     
-    var exit_status: TransactionResource.ExitStatus
-    var reciever_container = reciever_inventory.get_inventory().get_container_by_name(
+    var exit_status: Transaction.ExitStatus
+    var reciever_container = reciever_inventory.get_inventory().get_store_by_name(
         container.get_id()
     )
 
@@ -76,9 +77,9 @@ func send_update_to_inventory(reciever_inventory: Inventory):
         print("reciever_container: " + str(reciever_container))
         print("reciever_inventory container id: " + str(reciever_container.get_id()))
         print("reciever_inventory container max: " + str(reciever_container.get_max_amount()))
-        print("inventory container max: " + str(reciever_inventory.get_inventory().get_container_max_size()))
+        print("inventory container max: " + str(reciever_inventory.get_inventory().get_store_max_size()))
         
-        var transaction = TransactionResource.new(
+        var transaction = Transaction.new(
             container, 
             reciever_container, 
             "add" + container.get_id(),
@@ -89,11 +90,11 @@ func send_update_to_inventory(reciever_inventory: Inventory):
         print("transaction error code: " + str(exit_status))
     
     else:
-        var new_container = ContainerResource.new(
+        var new_container = Store.new(
             container.get_id(),
             0,
             0,
-            reciever_inventory.get_inventory().get_container_max_size(),
+            reciever_inventory.get_inventory().get_store_max_size(),
             true,
             reciever_inventory.get_inventory().get_id(),
             0,
@@ -102,23 +103,26 @@ func send_update_to_inventory(reciever_inventory: Inventory):
         #debug
         print("container id: " + str(new_container.get_id()))
         print("container max: " + str(new_container.get_max_amount()))
-        print("inventory container max: " + str(reciever_inventory.get_inventory().get_container_max_size()))
+        print("inventory container max: " + str(reciever_inventory.get_inventory().get_store_max_size()))
 
         reciever_inventory.add_container(
             new_container,
             0
         )
 
-        var transaction = TransactionResource.new(
+        var transaction = Transaction.new(
             container, 
             new_container, 
             "add" + str(container.get_amount()) + container.get_id(),
             container.get_amount()
         )
         
+        # debug
         print(str(transaction.get_sender(), transaction.get_reciever(), transaction.get_rate()))
         
         exit_status = _execute_transaction(transaction)
+        
+        # debug
         print("transaction error code: " + str(exit_status.get_error()))
         print("transaction overflow: " + str(exit_status.get_overflow()))
 
