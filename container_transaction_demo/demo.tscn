@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://container_transaction_demo/demo.gd" id="1_3h6ee"]
 [ext_resource type="Script" path="res://Inventory.gd" id="2_spxh6"]
-[ext_resource type="Script" path="res://Resource.gd" id="3_a6oby"]
+[ext_resource type="Script" path="res://ResourceContainer.gd" id="3_a6oby"]
 
 [node name="Demo" type="Node" node_paths=PackedStringArray("gold")]
 script = ExtResource("1_3h6ee")
@@ -32,10 +32,9 @@ grow_horizontal = 2
 grow_vertical = 2
 editable = false
 
-[connection signal="added_container" from="Player/Inventory" to="." method="_on_inventory_added_container"]
-[connection signal="inventory_created" from="Player/Inventory" to="." method="_on_inventory_inventory_created"]
-[connection signal="attached_container" from="Gold" to="." method="_on_resource_container_attached_container"]
-[connection signal="created_container" from="Gold" to="." method="_on_resource_container_created_container"]
-[connection signal="removed_container" from="Gold" to="." method="_on_resource_container_removed_container"]
+[connection signal="added_store" from="Player/Inventory" to="." method="_on_inventory_added_store"]
+[connection signal="inventory_updated" from="Player/Inventory" to="." method="_on_inventory_updated"]
+[connection signal="attached_store" from="Gold" to="." method="_on_resource_container_attached_store"]
+[connection signal="created_store" from="Gold" to="." method="_on_resource_container_created_store"]
 [connection signal="transaction_executed" from="Gold" to="." method="_on_resource_container_transaction_executed"]
-[connection signal="updated_container" from="Gold" to="." method="_on_resource_container_updated_container"]
+[connection signal="updated_store" from="Gold" to="." method="_on_resource_container_updated_store"]

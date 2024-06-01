@@ -5,34 +5,34 @@ class_name Inventory
 @export var container_size_limit: int 
 @export var max_containers: int
 
-var _inventory: InventoryContainer
+var _metastore: Metastore
 
-signal inventory_created(inventory:Inventory)
-signal added_container(container: ContainerResource)
-signal removed_container(container: ContainerResource)
-signal container_rejected(rejected_status)
+signal inventory_updated(inventory:Inventory)
+signal added_store(store: Store)
+signal removed_store(store: Store)
+signal rejected_store(rejected_status)
 
-func create_inventory():
-    _inventory = InventoryContainer.new(
-        str(player.get_name()) + "_inventory",
+func create_metastore():
+    _metastore = Metastore.new(
+        str(player.get_name()) + "_metastore",
         0,
         10,
         0,
         100
     )
-    inventory_created.emit(self)
+    inventory_updated.emit(self)
 
-func get_inventory():
-    if !_inventory:
+func get_metastore():
+    if !_metastore:
         return
-    return _inventory
+    return _metastore
 
-func add_container(container, idx):
-    if _inventory.get_containers().size() >= max_containers:
+func add_store(store, idx):
+    if _metastore.get_stores().size() >= max_containers:
         return
     
-    _inventory.add_container(container, idx)
-    added_container.emit(container)
+    _metastore.add_store(store, idx)
+    added_store.emit(store)
 
 func _ready():
-    create_inventory()
+    create_metastore()

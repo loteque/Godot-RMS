@@ -1,10 +1,10 @@
 extends Resource
-class_name TransactionResource
+class_name Transaction
 
 var _id: String
 var _rate: int
-var _sender: ContainerResource
-var _reciever: ContainerResource
+var _sender: Store
+var _reciever: Store
 
 enum ERROR{
     success,
@@ -69,14 +69,14 @@ func execute() -> ExitStatus:
             _reciever.add(_rate)
             exit_status.set_status(ERROR.success, overflow)
     
-    #debug
+    # TODO: #12 exit_status erros should only be returned in editormode and debug buiilds
     if exit_status.get_error() != ERROR.success:
         push_warning("transaction.execute(), error code: " + str(exit_status.get_error()))
     
     return exit_status
 
-func _init(sender: ContainerResource, 
-            reciever: ContainerResource, 
+func _init(sender: Store, 
+            reciever: Store, 
             id: String = "",
             rate: int = 0
             ):
