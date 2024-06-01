@@ -32,7 +32,7 @@ func get_store_max_size():
 func get_store_by_name(store_id) -> Store:
     var selected: Store
 
-    # gonna need a better search
+    # TODO: #13 gonna need a better search
     for store in _stores:
         if !store:
             print("inventory is empty")
@@ -42,10 +42,9 @@ func get_store_by_name(store_id) -> Store:
         if store._id == store_id:
             selected = store
         else:
+            # TODO: #15 MetaStore::get_store_by_name() needs info and error handling
             print("no match in inventory_container")
-            
-    print("looked up: " + store_id)
-    print("found: " + str(selected))
+
     return selected
 
 func add_store(store: Store, metastore_index: int):
@@ -58,7 +57,6 @@ func add_store(store: Store, metastore_index: int):
 
         _stores.insert(metastore_index, store)
 
-# c_id is container_id?
 func remove_store(store_id: String):
     var selected = get_store_by_name(store_id)
 
@@ -66,7 +64,7 @@ func remove_store(store_id: String):
         return
 
     if selected:
-        # .get_inventory_index()
+        # TODO: #14 Metastore::remove_store() should call .get_inventory_index()
         _stores[selected._metastore_index] = null
 
 func _init(

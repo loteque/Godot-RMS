@@ -69,7 +69,7 @@ func execute() -> ExitStatus:
             _reciever.add(_rate)
             exit_status.set_status(ERROR.success, overflow)
     
-    #debug
+    # TODO: #12 exit_status erros should only be returned in editormode and debug buiilds
     if exit_status.get_error() != ERROR.success:
         push_warning("transaction.execute(), error code: " + str(exit_status.get_error()))
     
