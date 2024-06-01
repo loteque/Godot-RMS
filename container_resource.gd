@@ -1,13 +1,14 @@
 extends Resource
-class_name ContainerResource
+class_name Store
 
-@export var _id: String
-@export var _amount: int
-@export var _min_amount: int
-@export var _max_amount: int
-@export var _inventory_id: String
-@export var _inventory_index: int
-@export var _is_depletable: bool = true
+# no exports needed
+var _id: String
+var _amount: int
+var _min_amount: int
+var _max_amount: int
+var _metastore_id: String
+var _metastore_index: int
+var _is_depletable: bool = true
 
 enum STATUS {
     available,
@@ -44,10 +45,10 @@ func get_max_amount():
     return _max_amount
 
 func get_inventory_id():
-    return _inventory_id
+    return _metastore_id
 
 func get_inventory_index():
-    return _inventory_index
+    return _metastore_index
 
 func get_status():
     return status
@@ -58,8 +59,6 @@ func get_state():
 func get_mode():
     return mode
 
-#overflow should be 0 when new amount <= max amount
-#should be positive integer when > max amount
 func claculate_overflow(rate: int) -> int:
     var new_amount = _amount + rate
     var overflow: int = 0
@@ -77,7 +76,6 @@ func is_depleted():
         return true
     else:
         return false
-
 
 func subtract(rate):
     if state == STATE.empty:
@@ -120,8 +118,8 @@ func _init(name: String,
             min_amount: int, 
             max_amount: int, 
             is_depletable,
-            inventory_id: String = "", 
-            inventory_index: int = 0
+            metastore_id: String = "", 
+            metastore_index: int = 0
             ):
     
     _id = name
@@ -129,8 +127,8 @@ func _init(name: String,
     _min_amount = min_amount
     _max_amount = max_amount
     _is_depletable = is_depletable
-    _inventory_id = inventory_id
-    _inventory_index = inventory_index
+    _metastore_id = metastore_id
+    _metastore_index = metastore_index
 
 func _ready():
     status = STATUS.available
