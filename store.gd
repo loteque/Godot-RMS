@@ -1,7 +1,6 @@
 extends Resource
 class_name Store
 
-# no exports needed
 var _id: String
 var _amount: int
 var _min_amount: int
@@ -96,7 +95,6 @@ func subtract(rate):
 func add(rate):
     if state == STATE.full:
         status = STATUS.unavailable
-        print(str(status))
         return
 
     var new_amount = _amount + rate
