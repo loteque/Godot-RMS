@@ -34,5 +34,10 @@ func add_store(store, idx):
     _metastore.add_store(store, idx)
     added_store.emit(store)
 
+func remove_store(store):
+    var selected = _metastore.get_store_by_name(store.get_id())
+    removed_store.emit(selected)
+    _metastore.remove_store(selected.get_id())
+    
 func _ready():
     create_metastore()
