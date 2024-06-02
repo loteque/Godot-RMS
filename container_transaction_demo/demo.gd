@@ -103,8 +103,18 @@ func _on_resource_container_transaction_executed(transaction, exit_status):
 
 func _on_resource_container_updated_store(id:String, amount:int, inventory_id):
     result = result + "container updated: " + str(inventory_id) + " has " + str(amount) + " " + str(id) + "\n"
+    result = result + "---------------- \n"
     output.text = result
 
 func _on_resource_container_removed_store(removed_from:ResourceContainer):
     result = result + "removed container from " + str(removed_from) + "\n"
-    
+
+func _on_inventory_removed_store(store: Store):
+    result = (
+        result 
+        + "removed store " 
+        + str(store.get_id()) 
+        + " from inventory " 
+        + str(player_inventory.get_metastore().get_id()) 
+        + "\n"
+    )
