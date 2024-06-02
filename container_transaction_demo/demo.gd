@@ -60,6 +60,20 @@ func _ready():
     gold.connect("removed_store", _on_resource_container_removed_store)   
     gold.send_update_to_inventory(player_inventory)
 
+    player_inventory.remove_store(player_inventory.get_metastore().get_store_by_name("gold"))
+    
+    gold = ResourceContainer.new()
+    gold.id = "gold"
+    gold.max_amount = 110
+    gold.amount = 110
+    add_child(gold)
+    gold.connect("created_store", _on_resource_container_created_store)
+    gold.connect("attached_store", _on_resource_container_attached_store)
+    gold.connect("transaction_executed", _on_resource_container_transaction_executed)
+    gold.connect("updated_store", _on_resource_container_updated_store)
+    gold.connect("removed_store", _on_resource_container_removed_store)   
+    gold.send_update_to_inventory(player_inventory)
+
 func _on_resource_container_created_store(store):
     result = result + "store created, id: " + str(store.get_id()) + "\n"
     result = result + "store max: " + str(store.get_max_amount()) + "\n"

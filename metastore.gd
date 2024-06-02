@@ -64,8 +64,7 @@ func remove_store(store_id: String):
         return
 
     if selected:
-        # TODO: #14 Metastore::remove_store() should call .get_inventory_index()
-        _stores[selected._metastore_index] = null
+        _stores[selected.get_inventory_index()] = null
 
 func _init(
     id: String,
