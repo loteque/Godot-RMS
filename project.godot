@@ -14,6 +14,10 @@ config/name="Resource Management Lib"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=648
+
 [input]
 
 left={

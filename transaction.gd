@@ -48,11 +48,17 @@ func execute() -> ExitStatus:
 
     if _reciever.status == _reciever.STATUS.unavailable:
 
-        exit_status.set_status(ERROR.reciver_unavailable, 0)
+        exit_status.set_status(
+            ERROR.reciver_unavailable, 
+            0
+        )
 
     if _sender.status == _sender.STATUS.unavailable:
         
-        exit_status.set_status(ERROR.sender_unavailabe, 0)
+        exit_status.set_status(
+            ERROR.sender_unavailabe, 
+            0
+        )
     
     if _sender == _reciever:
         
@@ -65,13 +71,23 @@ func execute() -> ExitStatus:
             _sender.mode = _sender.MODE.sender
             _sender.subtract(_rate)
             _reciever.mode = _reciever.MODE.reciever
-            var overflow = _reciever.claculate_overflow(_rate)
+            var overflow = (
+                _reciever
+                .claculate_overflow(_rate)
+            )
             _reciever.add(_rate)
-            exit_status.set_status(ERROR.success, overflow)
+            exit_status.set_status(
+                ERROR.success, 
+                overflow
+            )
     
     # TODO: #12 exit_status erros should only be returned in editormode and debug buiilds
     if exit_status.get_error() != ERROR.success:
-        push_warning("transaction.execute(), error code: " + str(exit_status.get_error()))
+        push_warning(
+            "transaction.execute(), 
+            error code: " 
+            + str(exit_status.get_error())
+        )
     
     return exit_status
 
