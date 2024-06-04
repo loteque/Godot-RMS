@@ -47,15 +47,15 @@ func get_store_by_name(store_id) -> Store:
 
     return selected
 
-func add_store(store: Store, metastore_index: int):
-        if _stores.size() >= _max_amount:
+func add_store(store: Store):
+        if _stores.size() == _max_amount:
             state = STATE.full
             return status
         
         if store._max_amount > _store_max_size:
             return REJECTED.storeTooLarge
 
-        _stores.insert(metastore_index, store)
+        _stores.append(store)
 
 func remove_store(store_id: String):
     var selected = get_store_by_name(store_id)
@@ -64,7 +64,7 @@ func remove_store(store_id: String):
         return
 
     if selected:
-        _stores[selected.get_inventory_index()] = null
+        _stores.remove_at(selected.get_inventory_index())
 
 func _init(
     id: String,

@@ -16,7 +16,7 @@ var transaction_exit_status: int
 
 signal created_store(container: Store)
 signal attached_store(attached_to: ResourceContainer)
-signal removed_store(removed_from: ResourceContainer)
+signal removed_resource_container(removed_from: Node)
 signal updated_store(
     id: String, 
     amount: int, 
@@ -70,50 +70,91 @@ func send_update_to_inventory(target_inventory: Inventory):
     
     #TODO: #16 ResourceContainer::send_update_to_inventory() should push_info exit_status in debug builds and editor mode
     var exit_status: Transaction.ExitStatus
-    var reciever_store = target_inventory.get_metastore().get_store_by_name(
-        store.get_id()
+    var reciever_store = (
+        target_inventory
+        .get_metastore()
+        .get_store_by_name(
+            store.get_id()
+        )
     )
+
+    var metastore_status = (
+        target_inventory
+        .get_metastore()
+        .get_status()
+    )    
+    var metastore_store_max_size = (
+        target_inventory
+        .get_metastore()
+        .get_store_max_size()
+    )
+    var metastore_last_index = (
+        target_inventory
+        .get_metastore()
+        .get_stores()
+        .size()
+    )
+    var new_metastore_index = metastore_last_index + 1 
+   
+    var store_id = store.get_id()
+    var transaction_amount = store.get_amount()
+    var transaction_id = (
+        "add" 
+        + str(transaction_amount) 
+        + str(store_id)
+    )
+    var metastore_id = (
+        target_inventory
+        .get_metastore()
+        .get_id()
+    )
+    var new_store = Store.new(
+        store_id,
+        0,
+        metastore_last_index,
+        metastore_store_max_size,
+        true,
+        metastore_id,
+        new_metastore_index,
+    )
+
+    if metastore_status == Metastore.STATUS.unavailable:
+
+        exit_status = Transaction.ExitStatus.new()
+        exit_status.set_status(Transaction.ERROR.reciver_unavailable, 0)
+        
+        return exit_status
 
     if reciever_store:
         
         var transaction = Transaction.new(
             store, 
             reciever_store, 
-            "add" + store.get_id(),
-            store.get_amount()
+            transaction_id,
+            transaction_amount
         )
-        
         exit_status = _execute_transaction(transaction)
     
     else:
-        var new_store = Store.new(
-            store.get_id(),
-            0,
-            0,
-            target_inventory.get_metastore().get_store_max_size(),
-            true,
-            target_inventory.get_metastore().get_id(),
-            0,
-        )
 
         target_inventory.add_store(
             new_store,
-            0
         )
 
         var transaction = Transaction.new(
             store, 
             new_store, 
-            "add" + str(store.get_amount()) + store.get_id(),
-            store.get_amount()
+            transaction_id,
+            transaction_amount
         )
-        
         exit_status = _execute_transaction(transaction)
 
+
     if store.is_depleted():
-        removed_store.emit(self)
+        removed_resource_container.emit(get_parent())
         queue_free()
 
 
 func _ready():
     create_store()
+    parent = get_parent()

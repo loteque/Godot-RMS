@@ -82,7 +82,7 @@ func subtract(rate):
         return
     
     var new_amount = _amount - rate
-    if new_amount <= 0:
+    if new_amount == 0:
         new_amount = 0
         state = STATE.empty
         status = STATUS.unavailable
@@ -93,6 +93,9 @@ func subtract(rate):
     update_amount(new_amount)
 
 func add(rate):
+    if rate == 0 and _amount == 0:
+        return
+
     if state == STATE.full:
         status = STATUS.unavailable
         return
@@ -115,7 +118,7 @@ func _init(name: String,
             amount: int, 
             min_amount: int, 
             max_amount: int, 
-            is_depletable,
+            is_depletable: bool,
             metastore_id: String = "", 
             metastore_index: int = 0
             ):
